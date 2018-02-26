@@ -1,0 +1,6 @@
+---
+features:
+  - Add a role for deploying Apache Kafka, a distributed streaming platform.
+    See https://kafka.apache.org/ for more details.
+other:
+  - Requires Apache Zookeeper to be configured.
