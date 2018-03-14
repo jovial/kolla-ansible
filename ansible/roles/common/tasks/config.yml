@@ -40,6 +40,7 @@
     - "03-rabbitmq"
     - "04-openstack-wsgi"
     - "06-kafka"
+    - "07-zookeeper"
   notify:
     - Restart fluentd container
 

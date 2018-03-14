@@ -7,7 +7,7 @@
     </record>
 </filter>
 
-<filter infra.var.log.kolla.kafka.*.log>
+<filter infra.var.log.kolla.*.*.log>
     @type record_transformer
     <record>
         Logger ${tag_parts[4]}
