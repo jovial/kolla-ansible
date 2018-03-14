@@ -213,7 +213,7 @@ control
 deployment
 
 [zookeeper:children]
-monitoring
+control
 
 [zun:children]
 control
@@ -567,10 +567,6 @@ designate
 # Placement
 [placement-api:children]
 placement
-
-# Zookeeper
-[zookeeper:children]
-zookeeper
 
 # Zun
 [zun-api:children]
