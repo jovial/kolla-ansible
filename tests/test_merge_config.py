@@ -86,11 +86,27 @@ c_key2 = 1 2 3
 
 '''
 
+TESTA_NO_SECTIONS = '''key1 = a
+key2 = b
+
+'''
+
+TESTB_NO_SECTIONS = '''key3 = c
+
+'''
+
+TESTC_NO_SECTIONS = '''key1 = a
+key2 = b
+key3 = c
+
+'''
+
 
 class OverrideConfigParserTest(base.BaseTestCase):
 
     def test_read_write(self):
-        for ini in [TESTA, TESTB, TESTC]:
+        for ini in [TESTA, TESTB, TESTC, TESTA_NO_SECTIONS, TESTB_NO_SECTIONS,
+                    TESTC_NO_SECTIONS]:
             parser = merge_configs.OverrideConfigParser()
             parser.parse(StringIO(ini))
             output = StringIO()
@@ -105,4 +121,13 @@ class OverrideConfigParserTest(base.BaseTestCase):
         output = StringIO()
         parser.write(output)
         self.assertEqual(TESTC, output.getvalue())
+        output.close()
+
+    def test_merge_no_section(self):
+        parser = merge_configs.OverrideConfigParser()
+        parser.parse(StringIO(TESTA_NO_SECTIONS))
+        parser.parse(StringIO(TESTB_NO_SECTIONS))
+        output = StringIO()
+        parser.write(output)
+        self.assertEqual(TESTC_NO_SECTIONS, output.getvalue())
         output.close()
