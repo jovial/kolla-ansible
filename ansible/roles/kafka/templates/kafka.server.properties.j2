@@ -1,5 +1,4 @@
-broker.id={{ play_hosts.index(inventory_hostname) }}
-port=9092
+listeners=PLAINTEXT://{{ api_interface_address }}:{{ kafka_port }}
 num.network.threads=3
 num.io.threads=8
 socket.send.buffer.bytes=102400
