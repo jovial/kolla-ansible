@@ -1,0 +1,32 @@
+{
+    "command": "/usr/sbin/httpd -DFOREGROUND",
+    "config_files": [
+{% if groups['ironic-inspector'] | length > 0 %}
+        {
+            "source": "{{ container_config_directory }}/ironic-agent.kernel",
+            "dest": "/httpboot/ironic-agent.kernel",
+            "owner": "root",
+            "perm": "0644"
+        },
+        {
+            "source": "{{ container_config_directory }}/ironic-agent.initramfs",
+            "dest": "/httpboot/ironic-agent.initramfs",
+            "owner": "root",
+            "perm": "0644"
+        },
+        {
+            "source": "{{ container_config_directory }}/default",
+            "dest": "/httpboot/pxelinux.cfg/default",
+            "owner": "root",
+            "perm": "0644"
+        }
+{% endif %}
+    ],
+    "permissions": [
+        {
+            "path": "/httpboot/pxelinux.cfg",
+            "owner": "ironic:ironic",
+            "recurse": true
+        }
+    ]
+}
