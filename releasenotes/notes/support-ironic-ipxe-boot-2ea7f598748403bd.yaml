@@ -1,0 +1,3 @@
+---
+features:
+  - Add support for configuring Ironic with the ipxe_enabled option.
