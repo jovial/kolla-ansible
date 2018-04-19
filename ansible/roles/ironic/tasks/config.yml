@@ -79,6 +79,10 @@
     - groups['ironic-inspector'] | length > 0
     - inventory_hostname in groups['ironic-pxe']
 
+- debug:
+    msg: "The groups {{ groups }}"
+  tags: wjs
+
 - name: Copying pxelinux.cfg default
   template:
     src: "{{ item }}"

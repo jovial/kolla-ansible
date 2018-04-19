@@ -11,13 +11,14 @@
       - "ironic_pxe:/tftpboot/"
   when: inventory_hostname in groups['ironic-pxe']
 
-  - name: Starting ironic-ipxe container
+- name: Starting ironic-ipxe container
   kolla_docker:
     action: "start_container"
     common_options: "{{ docker_common_options }}"
     name: "ironic_ipxe"
     image: "{{ ironic_pxe_image_full }}"
     volumes:
+      - "{{ node_config_directory }}/ironic-ipxe/:{{ container_config_directory }}/:ro"
       - "{{ node_config_directory }}/ironic-ipxe/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "ironic_ipxe:/httpboot/"
