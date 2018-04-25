@@ -51,6 +51,15 @@ Set ironic_console_serial_speed in ``/etc/kolla/globals.yml``:
 
 .. _web_console_documentation: https://docs.openstack.org/ironic/latest/admin/console.html#node-web-console
 
+Chainloading iPXE
+=================
+It is possible to chainload iPXE via a standard PXE boot. To enable iPXE, set
+enable_ironic_ipxe in ``/etc/kolla/globals.yml``:
+
+::
+
+    enable_ironic_ipxe: "yes"
+
 Post-deployment configuration
 =============================
 Configuration based off upstream documentation_.
