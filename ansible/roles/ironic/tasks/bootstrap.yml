@@ -86,5 +86,5 @@
       - "ironic_ipxe:/var/www/html/"
       - "ironic_pxe:/tftpboot/"
   when:
-    - enable_ipxe | bool
+    - enable_ironic_ipxe | bool
     - inventory_hostname in groups['ironic-ipxe']

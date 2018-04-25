@@ -116,7 +116,7 @@
     - "{{ node_custom_config }}/ironic/ironic-ipxe-httpd.conf"
     - "ironic-ipxe-httpd.conf.j2"
   when:
-    - enable_ipxe | bool
+    - enable_ironic_ipxe | bool
     - inventory_hostname in groups['ironic-ipxe']
 
 - name: Check if policies shall be overwritten

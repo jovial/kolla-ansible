@@ -23,7 +23,7 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "ironic_ipxe:/var/www/html"
   when:
-    - enable_ipxe | bool
+    - enable_ironic_ipxe | bool
     - inventory_hostname in groups['ironic-ipxe']
 
 - name: Starting ironic-api container
