@@ -1,6 +1,10 @@
+{% set server_root = '/etc/apache2' if kolla_base_distro in ['ubuntu', 'debian'] else '/etc/httpd' %}
+{% set user = 'www-data' if kolla_base_distro in ['ubuntu', 'debian'] else 'apache' %}
+
 # Apache httpd v2.4 minimal configuration
-# This can be reduced further if you remove the accees log and mod_log_config
-ServerRoot "/etc/httpd"
+# This can be reduced further if you remove the access log and mod_log_config
+ServerRoot "{{ server_root }}"
+ServerName {{ api_interface_address }}
 
 # Minimum modules needed
 LoadModule mpm_event_module modules/mod_mpm_event.so
@@ -12,7 +16,8 @@ LoadModule unixd_module modules/mod_unixd.so
 PidFile /tmp/httpd.pid
 
 # Comment this out if running httpd as a non root user
-User apache
+User {{ user }}
+Group {{ user }}
 
 # Port to Listen on
 Listen {{ ironic_ipxe_port }}
