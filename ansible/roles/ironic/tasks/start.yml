@@ -19,7 +19,6 @@
     image: "{{ ironic_pxe_image_full }}"
     volumes:
       - "{{ node_config_directory }}/ironic-ipxe/:{{ container_config_directory }}/:ro"
-      - "{{ node_config_directory }}/ironic-ipxe/:{{ container_config_directory }}/:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "ironic_ipxe:/var/www/html"
   when:
