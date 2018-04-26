@@ -15,7 +15,7 @@ PidFile /tmp/httpd.pid
 User apache
 
 # Port to Listen on
-Listen 1234
+Listen {{ ironic_ipxe_port }}
 
 # In a basic setup httpd can only serve files from its document root
 DocumentRoot "/var/www/html"
