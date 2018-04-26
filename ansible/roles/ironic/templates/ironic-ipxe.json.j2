@@ -1,13 +1,5 @@
 {% set apache_cmd = 'apache2' if kolla_base_distro in ['ubuntu', 'debian'] else 'httpd' %}
 
 {
-    "command": "{{ apache_cmd }} -DFOREGROUND -f {{ container_config_directory }}/httpd.conf",
-    "config_files_DISABLED_BY_WILL": [
-         {
-            "source": "{{ container_config_directory }}/httpd.conf",
-            "dest": "/etc/httpd/conf/httpd.conf",
-            "owner": "root",
-            "perm": "0644"
-        }
-    ]
+    "command": "{{ apache_cmd }} -DFOREGROUND -f {{ container_config_directory }}/httpd.conf"
 }

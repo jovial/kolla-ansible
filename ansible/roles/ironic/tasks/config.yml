@@ -79,23 +79,6 @@
     - groups['ironic-inspector'] | length > 0
     - inventory_hostname in groups['ironic-pxe']
 
-#- debug:
-#    msg: "The groups {{ groups }}"
-#  tags: wjs
-#
-#- name: Copying pxelinux.cfg default
-#  template:
-#    src: "{{ item }}"
-#    dest: "{{ node_config_directory }}/ironic-ipxe/default"
-#  with_first_found:
-#    - "{{ node_custom_config }}/ironic/pxelinux.default"
-#    - "{{ node_custom_config }}/ironic/{{ inventory_hostname }}/pxelinux.default"
-#    - "pxelinux.default.j2"
-#  when:
-#    # Only required when Ironic inspector is in use.
-#    - groups['ironic-inspector'] | length > 0
-#    - inventory_hostname in groups['ironic-ipxe']
-
 - name: Copying ironic-agent kernel and initramfs
   copy:
     src: "{{ node_custom_config }}/ironic/{{ item }}"
