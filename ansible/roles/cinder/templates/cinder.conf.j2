@@ -102,6 +102,7 @@ volume_driver = cinder.volume.drivers.lvm.LVMVolumeDriver
 volume_backend_name = lvm-1
 iscsi_helper = {{ cinder_iscsi_helper }}
 iscsi_protocol = iscsi
+iscsi_ip_address= {{ kolla_external_vip_address }}
 {% endif %}
 
 {% if enable_ceph | bool and cinder_backend_ceph | bool %}

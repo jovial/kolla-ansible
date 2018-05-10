@@ -25,6 +25,15 @@ host_ip = {{ api_interface_address }}
 api_workers = {{ openstack_service_workers }}
 {% endif %}
 
+[cinder]
+auth_url = {{ admin_protocol }}://{{ kolla_internal_fqdn }}:{{ keystone_admin_port }}
+auth_type = password
+project_domain_id = default
+user_domain_id = default
+project_name = service
+username = {{ ironic_keystone_user }}
+password = {{ ironic_keystone_password }}
+
 {% if service_name == 'ironic-conductor' %}
 [conductor]
 api_url = {{ internal_protocol }}://{{ kolla_internal_fqdn }}:{{ ironic_api_port }}
@@ -99,6 +108,7 @@ pxe_config_template = $pybasedir/drivers/modules/ipxe_config.template
 uefi_pxe_config_template = $pybasedir/drivers/modules/ipxe_config.template
 tftp_root = /httpboot
 tftp_master_path = /httpboot/master_images
+tftp_server = {{ kolla_external_vip_address }}
 {% endif %}
 
 {% if enable_ironic_ipxe | bool %}
