@@ -51,7 +51,7 @@ ironic_services:
   ironic-ipxe:
     container_name: ironic_ipxe
     group: ironic-ipxe
-    enabled: enable_ironic_ipxe | bool
+    enabled: "{{ enable_ironic_ipxe | bool }}"
     image: "{{ ironic_pxe_image_full }}"
     volumes:
       - "{{ node_config_directory }}/ironic-ipxe/:{{ container_config_directory }}/:ro"
