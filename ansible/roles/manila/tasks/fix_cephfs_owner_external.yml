@@ -15,7 +15,7 @@
 
 - name: Get cephfs addr external
   set_fact:
-    cephfs_addr: "{{ lookup('ini', 'mon_host section=global file={{ ceph_conf.path }}') | trim }}"
+    cephfs_addr: "{{ lookup('ini', 'mon_host section=global file={{ ceph_conf.path }}') | trim }}:/"
   run_once: true
 
 - name: Get cephfs secret
