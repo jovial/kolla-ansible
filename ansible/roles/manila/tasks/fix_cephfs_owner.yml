@@ -14,6 +14,8 @@
 - name: Get cephfs addr
   set_fact: cephfs_addr={% for host in groups['ceph-mon'] %}{{ hostvars[host]['ansible_' + hostvars[host]['storage_interface']]['ipv4']['address'] }}{% if loop.last %}:6789:/{% else %},{% endif %}{% endfor %}
   run_once: True
+  when:
+    - enable_ceph | bool
 
 - name: Pulling cephx keyring for manila
   command: docker exec ceph_mon ceph auth get-key client.manila
@@ -21,6 +23,12 @@
   delegate_to: "{{ groups['ceph-mon'][0] }}"
   changed_when: False
   run_once: True
+  when:
+    - enable_ceph | bool
+
+- include: fix_cephfs_owner_external.yml
+  when:
+    - not enable_ceph | bool
 
 - name: Umount cephfs
   command: "docker exec -u 0 manila_share umount /tmp/cephfs/"

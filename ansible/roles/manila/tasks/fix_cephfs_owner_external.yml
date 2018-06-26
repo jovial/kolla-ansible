@@ -1,0 +1,30 @@
+---
+- name: create temporary file
+  tempfile:
+    state: file
+    suffix: ceph.conf
+  register: ceph_conf
+  run_once: true
+
+- name: fetch ceph.conf
+  fetch:
+    src: "{{ node_config_directory }}"/manila-share/ceph.conf
+    dest: "{{ ceph_conf.path }}"
+    flat: true
+  run_once: true
+
+- name: Get cephfs addr external
+  set_fact:
+    cephfs_addr: "{{ lookup('ini', 'mon_host section=global file={{ ceph_conf.path }}') | trim }}"
+  run_once: true
+
+- name: Get cephfs secret
+  command: docker exec manila_share ceph-authtool -p /etc/ceph/ceph.client.manila.keyring -n client.manila
+  register: manila_keyring
+  changed_when: False
+  run_once: True
+ 
+- name: remove tmp file
+  file:
+    name: "{{ ceph_conf.path }}"
+    state: absent
