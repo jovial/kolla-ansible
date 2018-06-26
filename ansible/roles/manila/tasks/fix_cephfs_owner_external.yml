@@ -8,7 +8,7 @@
 
 - name: fetch ceph.conf
   fetch:
-    src: "{{ node_config_directory }}"/manila-share/ceph.conf
+    src: "{{ node_config_directory }}/manila-share/ceph.conf"
     dest: "{{ ceph_conf.path }}"
     flat: true
   run_once: true
