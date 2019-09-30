@@ -126,3 +126,31 @@ class MergeYamlConfigTest(base.BaseTestCase):
             }
         }
         self.assertDictEqual(actual, expected)
+
+    def test_merge_nested_extend(self):
+        initial_conf = {
+            'level0': {
+                'level1': {
+                    "mylist": ["one", "two"]
+                },
+            }
+        }
+
+        extension = {
+            'level0': {
+                'level1': {
+                    "mylist": ["three"]
+                },
+            }
+        }
+
+        actual = merge_yaml.Utils.update_nested_conf(
+            initial_conf, extension, extend=True)
+        expected = {
+                'level0': {
+                    'level1': {
+                        "mylist": ["one", "two", "three"]
+                    },
+                }
+        }
+        self.assertDictEqual(actual, expected)

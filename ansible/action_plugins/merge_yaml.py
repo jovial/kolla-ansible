@@ -73,10 +73,11 @@ class ActionModule(action.ActionBase):
 
         output = {}
         sources = self._task.args.get('sources', None)
+        extend = self._task.args.get('extend', False)
         if not isinstance(sources, list):
             sources = [sources]
         for source in sources:
-            Utils.update_nested_conf(output, self.read_config(source))
+            Utils.update_nested_conf(output, self.read_config(source), extend)
 
         # restore original vars
         self._templar.set_available_variables(old_vars)
@@ -90,7 +91,7 @@ class ActionModule(action.ActionBase):
 
             new_task = self._task.copy()
             new_task.args.pop('sources', None)
-
+            new_task.args.pop('extend', None)
             new_task.args.update(
                 dict(
                     src=result_file
@@ -113,10 +114,12 @@ class ActionModule(action.ActionBase):
 
 class Utils(object):
     @staticmethod
-    def update_nested_conf(conf, update):
+    def update_nested_conf(conf, update, extend=False):
         for k, v in six.iteritems(update):
             if isinstance(v, dict):
-                conf[k] = Utils.update_nested_conf(conf.get(k, {}), v)
+                conf[k] = Utils.update_nested_conf(conf.get(k, {}), v, extend)
+            elif k in conf and isinstance(conf[k], list) and extend:
+                conf[k].extend(v)
             else:
                 conf[k] = v
         return conf
