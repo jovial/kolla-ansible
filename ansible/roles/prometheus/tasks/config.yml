@@ -25,21 +25,51 @@
   notify:
     - Restart {{ item.key }} container
 
-- name: Copying over prometheus config file
-  vars:
-    service: "{{ prometheus_services['prometheus-server']}}"
-  template:
-    src: "{{ item }}"
-    dest: "{{ node_config_directory }}/prometheus-server/prometheus.yml"
-    mode: "0660"
-  register: prometheus_confs
-  when:
-    - inventory_hostname in groups[service.group]
-    - service.enabled | bool
+- name: Determine most specific config file
+  set_fact:
+    prometheus_config_file: "{{ item }}"
+  become: true
+  run_once: true
   with_first_found:
     - "{{ node_custom_config }}/prometheus/{{ inventory_hostname }}/prometheus.yml"
     - "{{ node_custom_config }}/prometheus/prometheus.yml"
     - "{{ role_path }}/templates/prometheus.yml.j2"
+
+- name: Determine most specific overrides
+  set_fact:
+    prometheus_config_overrides_parent: "{{ item }}"
+  become: true
+  run_once: true
+  with_first_found:
+    - files:
+        - "{{ node_custom_config }}/prometheus/{{ inventory_hostname }}/prometheus.yml.d"
+        - "{{ node_custom_config }}/prometheus/prometheus.yml.d"
+      skip: true
+
+- name: Find prometheus config overrides
+  become: true
+  local_action:
+    module: find
+    paths: "{{ prometheus_config_overrides_parent }}"
+    patterns: "*.yml"
+  register: prometheus_config_overrides_result
+  run_once: true
+  when: prometheus_config_overrides_parent is defined
+
+- name: Copying over prometheus config file
+  become: true
+  vars:
+    service: "{{ prometheus_services['prometheus-server']}}"
+    overrides: "{{ prometheus_config_overrides_result.files | default([]) | map(attribute='path') | list }}"
+  merge_yaml:
+    sources: "{{ [prometheus_config_file] + overrides }}"
+    dest: "{{ node_config_directory }}/prometheus-server/prometheus.yml"
+    mode: "0660"
+    extend: true
+  register: prometheus_confs
+  when:
+    - inventory_hostname in groups[service.group]
+    - service.enabled | bool
   notify:
     - Restart prometheus-server container
 
