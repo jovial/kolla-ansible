@@ -15,8 +15,9 @@
         },
         {
             "source": "{{ container_config_directory }}/extras",
-            "dest": "/etc/prometheus/extras/",
+            "dest": "/etc/prometheus/",
             "preserve_properties": true,
+            "merge": true,
             "optional": true
         }
     ],
