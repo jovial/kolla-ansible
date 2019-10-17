@@ -288,7 +288,7 @@
       notify:
         - Restart prometheus-server container
   vars:
-    base: "{{ node_custom_config }}/prometheus/extras/"
+    base: "{{ node_custom_config }}/prometheus/"
     service: "{{ prometheus_services['prometheus-server']}}"
   when:
     - inventory_hostname in groups[service.group]
